@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Handwritten Digit Detection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/input.css') }}">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="submit"] {
+            padding: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Let's detect your handwritten digit (^_^)</h1>
+        <h1>....Choose what you want to detect....</h1>
+        <form action="/Hand_Display" method="POST">
+            <label class="center" id="color1"> Digit 0-9 --> (1) or Character A-Z --> (2) :</label><br>
+            <input type="text" name="Choice"><br><br>
+            <p class="center">Note: Press open and select the image</p>
+            <input type="submit" value="Click on open">
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        const balls = [];
+        const ballGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+        const ballMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        for (let i = 0; i < 100; i++) {
+            const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+            ball.position.x = Math.random() * 20 - 10;
+            ball.position.y = Math.random() * 20;
+            ball.position.z = Math.random() * 20 - 10;
+            balls.push(ball);
+            scene.add(ball);
+        }
+        camera.position.z = 5;
+        function animate() {
+            requestAnimationFrame(animate);
+            balls.forEach(ball => {
+                ball.position.y -= 0.1;
+                if (ball.position.y < -10) {
+                    ball.position.y = 20;
+                }
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
