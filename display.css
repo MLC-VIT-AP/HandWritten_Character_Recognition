@@ -1,0 +1,27 @@
+h1{
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+}
+
+.borderimage{
+    border: 4px;
+}
+
+body{
+  background-color: #000000;
+}
+
+#color1{
+    color: red;
+}
+
+#color2{
+    color: green;
+}
+
+#color3{
+    color: #9932CC;
+}
