@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display with Falling Balls Background</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+        }
+        #image-container {
+            margin-bottom: 20px;
+        }
+        #image-container img {
+            border: 4px solid #000;
+            border-radius: 8px;
+            width: 400px;
+            height: 500px;
+        }
+    </style>
+    <link rel="stylesheet"
+          type="text/CSS"
+          href="{{ url_for('static', filename='CSS/display.css') }}"/>
+</head>
+<body>
+    <div id="content">
+        <div id="image-container">
+            <img src="{{ url_for('static', filename='images/Hand_Image.jpg') }}" id="borderimage" width="400" height="500" />
+        </div>
+        <h1>!!! Required Prediction !!!</h1>
+        <h1>Your handwritten value is {{ Predict }} {{ show }}</h1>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const balls = [];
+        const ballGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+        const ballMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+        for (let i = 0; i < 100; i++) {
+            const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+            ball.position.x = Math.random() * 20 - 10;
+            ball.position.y = Math.random() * 20;
+            ball.position.z = Math.random() * 20 - 10;
+            balls.push(ball);
+            scene.add(ball);
+        }
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            balls.forEach(ball => {
+                ball.position.y -= 0.1;
+                if (ball.position.y < -10) {
+                    ball.position.y = 20;
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
